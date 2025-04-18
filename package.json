@@ -2,6 +2,7 @@
   "name": "my-react-router-app",
   "private": true,
   "type": "module",
+  "proxy": "http://localhost:8080/",
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
@@ -11,10 +12,14 @@
   "dependencies": {
     "@react-router/node": "^7.5.0",
     "@react-router/serve": "^7.5.0",
+    "@tanstack/react-query": "^5.74.3",
+    "@tanstack/react-query-devtools": "^5.74.3",
+    "axios": "^1.8.4",
     "isbot": "^5.1.17",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router": "^7.5.0"
+    "react-router": "^7.5.0",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
     "@react-router/dev": "^7.5.0",
