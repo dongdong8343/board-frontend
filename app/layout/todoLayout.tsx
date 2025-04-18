@@ -3,7 +3,6 @@ import { Link, Outlet } from "react-router";
 export default function Layout() {
   return (
     <div className="min-h-screen bg-gray-100">
-      {/* Header */}
       <header className="bg-white shadow p-4 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-800">Todo App</h1>
         <nav className="space-x-4">
@@ -22,7 +21,6 @@ export default function Layout() {
         </nav>
       </header>
 
-      {/* Content */}
       <main className="p-6">
         <Outlet />
       </main>

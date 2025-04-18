@@ -1,6 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router";
 import { todoList } from "~/api/todoAPI";
+import TodoListComponent from "~/components/todo/todoListComponent";
+import Pagination from "~/components/todo/todoPageComponent";
 
 function TodoListPage() {
   const [searchParams] = useSearchParams();
@@ -18,34 +20,23 @@ function TodoListPage() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-4xl font-bold mb-6">Todo List Page</h1>
+      <h1 className="text-4xl font-bold mb-6">Todo List</h1>
 
       {isFetching && <p className="text-gray-500">Loading...</p>}
       {error && <p className="text-red-500">Something went wrong</p>}
 
-      <div className="grid grid-cols-1 gap-4">
-        {data?.dtoList.map((item) => (
-          <div
-            key={item.tno}
-            className="p-4 border rounded-xl shadow-md hover:shadow-lg transition-shadow bg-white"
-          >
-            <h2 className="text-xl font-semibold text-blue-600">
-              {item.title}
-            </h2>
-            <p className="text-gray-700">작성자: {item.writer}</p>
-            <p className="text-gray-500 text-sm">
-              등록일: {new Date(item.regDate).toLocaleString()}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <div className="mt-8 flex justify-between items-center text-sm text-gray-600">
-        <span>총 {data?.total}건</span>
-        <span>
-          페이지 {data?.page} / {Math.ceil(data?.total / data?.size)}
-        </span>
-      </div>
+      <TodoListComponent dtoList={data?.dtoList} />
+      {data && (
+        <Pagination
+          page={Number(data.page)}
+          start={Number(data.start)}
+          end={Number(data.end)}
+          prev={data.prev}
+          next={data.next}
+          total={data.total}
+          size={data.size}
+        />
+      )}
     </div>
   );
 }
