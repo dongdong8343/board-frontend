@@ -1,13 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import { getTodo } from "~/api/todoAPI";
-import TodoDetailComponent from "~/components/todo/todoDetailComponent";
+import TodoEditComponent from "~/components/todo/todoEditComponent";
 
-function TodoDetail() {
+function todoEdit() {
   const { tno } = useParams<{ tno: string }>();
 
   const query = useQuery({
-    queryKey: ["tno", tno],
+    queryKey: ["todo", tno],
     queryFn: () => getTodo(tno),
     staleTime: 10 * 60 * 1000,
   });
@@ -16,11 +16,8 @@ function TodoDetail() {
 
   return (
     <div>
-      {isFetching && <p className="text-gray-500">Loading...</p>}
-      {error && <p className="text-red-500">Something went wrong</p>}
-
       {data && (
-        <TodoDetailComponent
+        <TodoEditComponent
           tno={data.tno}
           content={data.content}
           title={data.title}
@@ -31,4 +28,4 @@ function TodoDetail() {
   );
 }
 
-export default TodoDetail;
+export default todoEdit;

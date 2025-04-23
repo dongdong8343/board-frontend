@@ -17,3 +17,20 @@ export async function addTodo(form: TodoAdd) {
 
   return res.data;
 }
+
+export async function getTodo(tno: string | undefined) {
+  const res = await axios.get(`${host}/${tno}`);
+
+  console.log(res.data);
+
+  return res.data;
+}
+
+export async function editTodo(tno: string | undefined, form: TodoEdit) {
+  const res = await axios.patch(`${host}/${tno}`, form);
+
+  console.log("잘못들고옴---------");
+  console.log(res.data);
+
+  return res.data;
+}

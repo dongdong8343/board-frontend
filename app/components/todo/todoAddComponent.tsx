@@ -1,6 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRef, type FormEvent } from "react";
 import { addTodo } from "~/api/todoAPI";
+import ResultComponent from "../common/resultComponent";
+import { useNavigate } from "react-router";
 
 export interface TodoFormData {
   title: string;
@@ -11,6 +13,7 @@ export interface TodoFormData {
 function TodoAddComponent() {
   const formRef = useRef<HTMLFormElement | null>(null);
   const query = useQueryClient();
+  const navigate = useNavigate();
 
   const mutaion = useMutation({
     mutationFn: addTodo,
@@ -108,6 +111,15 @@ function TodoAddComponent() {
             </button>
           </div>
         </form>
+
+        {mutaion.data && (
+          <ResultComponent
+            msg={"등록 완료"}
+            closeFn={() => {
+              navigate("/todo/list");
+            }}
+          />
+        )}
       </div>
     </div>
   );

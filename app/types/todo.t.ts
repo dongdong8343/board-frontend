@@ -3,3 +3,8 @@ interface TodoAdd {
   writer: string;
   content: string;
 }
+
+interface TodoEdit {
+  editedTitle: string;
+  editedContent: string;
+}
