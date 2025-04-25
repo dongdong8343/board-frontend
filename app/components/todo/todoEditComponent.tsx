@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { editTodo } from "~/api/todoAPI";
+import ResultComponent from "../common/resultComponent";
 
 interface TodoEditProps {
   tno: string;
@@ -22,10 +23,11 @@ function TodoEditComponent({ tno, title, writer, content }: TodoEditProps) {
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedContent, setEditedContent] = useState(content);
 
-  const mutaion = useMutation({
+  const updateMutaion = useMutation({
     mutationFn: ({ tno, form }: EditTodoArgs) => editTodo(tno, form),
     onSuccess: (data) => {
-      query.invalidateQueries({ queryKey: ["todo", "todos"] });
+      query.invalidateQueries({ queryKey: ["todos"] });
+      query.invalidateQueries({ queryKey: ["tno"] });
       console.log("등록 성공", data);
     },
     onError: (error) => {
@@ -34,19 +36,17 @@ function TodoEditComponent({ tno, title, writer, content }: TodoEditProps) {
   });
 
   const handleEdit = () => {
-    console.log("수정 요청");
-
     const data = {
       editedTitle,
       editedContent,
     };
 
-    mutaion.mutate({
+    console.log(data);
+
+    updateMutaion.mutate({
       tno: String(tno),
       form: data,
     });
-
-    navigate(`/todo/edit/${tno}`);
   };
 
   return (
@@ -72,13 +72,23 @@ function TodoEditComponent({ tno, title, writer, content }: TodoEditProps) {
       <div className="flex justify-between items-center">
         <p className="text-sm text-blue-600 font-medium">작성자: {writer}</p>
 
-        <button
-          onClick={handleEdit}
-          className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition"
-        >
-          ✏️ 수정
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleEdit}
+            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition"
+          >
+            ✏️ 수정
+          </button>
+        </div>
       </div>
+      {updateMutaion.data && (
+        <ResultComponent
+          msg={"M"}
+          closeFn={() => {
+            navigate(`/todo/list`);
+          }}
+        />
+      )}
     </div>
   );
 }
