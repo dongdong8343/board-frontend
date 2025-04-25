@@ -7,5 +7,6 @@ export default [
     route("add", "routes/todo/todoAdd.tsx"),
     route(":tno", "routes/todo/todoDetail.tsx"),
     route("edit/:tno", "routes/todo/todoEdit.tsx"),
+    route("signup", "routes/member/signup.tsx"),
   ]),
 ] satisfies RouteConfig;
