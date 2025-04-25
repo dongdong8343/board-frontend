@@ -29,7 +29,14 @@ export async function getTodo(tno: string | undefined) {
 export async function editTodo(tno: string | undefined, form: TodoEdit) {
   const res = await axios.patch(`${host}/${tno}`, form);
 
-  console.log("잘못들고옴---------");
+  console.log(res.data);
+
+  return res.data;
+}
+
+export async function deleteTodo(tno: number | undefined) {
+  const res = await axios.delete(`${host}/${tno}`);
+
   console.log(res.data);
 
   return res.data;

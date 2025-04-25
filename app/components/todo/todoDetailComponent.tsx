@@ -1,4 +1,7 @@
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router";
+import { deleteTodo } from "~/api/todoAPI";
+import ResultComponent from "../common/resultComponent";
 
 interface TodoDetailProps {
   tno: number;
@@ -9,6 +12,22 @@ interface TodoDetailProps {
 
 function TodoDetailComponent({ tno, title, writer, content }: TodoDetailProps) {
   const navigate = useNavigate();
+  const query = useQueryClient();
+
+  const deleteMutaion = useMutation({
+    mutationFn: (tno: number) => deleteTodo(tno),
+    onSuccess: (data) => {
+      query.invalidateQueries({ queryKey: ["todos"] });
+      console.log("삭제 성공", data);
+    },
+    onError: (error) => {
+      console.log("삭제 실패", error);
+    },
+  });
+
+  const handleDelete = () => {
+    deleteMutaion.mutate(tno);
+  };
 
   const handleEdit = () => {
     navigate(`/todo/edit/${tno}`);
@@ -32,13 +51,30 @@ function TodoDetailComponent({ tno, title, writer, content }: TodoDetailProps) {
       <div className="flex justify-between items-center">
         <p className="text-sm text-blue-600 font-medium">작성자: {writer}</p>
 
-        <button
-          onClick={handleEdit}
-          className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition"
-        >
-          ✏️ 수정
-        </button>
+        <div className="flex gap-2">
+          <button
+            onClick={handleEdit}
+            className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition"
+          >
+            ✏️ 수정
+          </button>
+          <button
+            onClick={handleDelete}
+            className="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition"
+          >
+            ❎ 삭제
+          </button>
+        </div>
       </div>
+
+      {deleteMutaion.data && (
+        <ResultComponent
+          msg={"D"}
+          closeFn={() => {
+            navigate("/todo/list");
+          }}
+        />
+      )}
     </div>
   );
 }
